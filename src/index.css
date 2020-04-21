@@ -9,7 +9,7 @@ body {
 }
 
 #cy {
-  height: calc(100vh - 50px);
-  width: calc(100vw - 50px);
-  padding: 50px;
+  height: calc(100% - 20px);
+  width: calc(100% - 20px);
+  padding: 20px;
 }

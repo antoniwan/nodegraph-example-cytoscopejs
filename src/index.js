@@ -1,7 +1,5 @@
 import cytoscape from "cytoscape";
 
-const PEOPLE_AMOUNT = 20;
-
 const generatePeople = (amount = 5) => {
   let members = [];
   for (let step = 0; step < amount; step++) {
@@ -9,7 +7,6 @@ const generatePeople = (amount = 5) => {
       group: "nodes",
       data: {
         id: `Person ${step + 1}`,
-        index: step,
       },
     };
     members.push(person);
@@ -21,6 +18,8 @@ const generatePeople = (amount = 5) => {
   };
 };
 
+const friendships = [];
+const PEOPLE_AMOUNT = 30;
 const data = generatePeople(PEOPLE_AMOUNT);
 
 const cy = cytoscape({
@@ -50,28 +49,13 @@ const cy = cytoscape({
   layout: {
     name: "circle",
     fit: true,
-    padding: "50px",
+    animate: true,
+    animationDuration: 500,
+    ready: function () {
+      console.log("Re-rendered the layout!");
+    },
   },
 });
-
-const friendships = [];
-friendships["flawed"] = [
-  {
-    data: { id: "AB Relationship", source: "Person A", target: "Person B" },
-  },
-  {
-    data: { id: "BC Relationship", source: "Person B", target: "Person C" },
-  },
-  {
-    data: { id: "DE Relationship", source: "Person D", target: "Person E" },
-  },
-  {
-    data: { id: "CB Relationship", source: "Person C", target: "Person B" },
-  },
-  {
-    data: { id: "EA Relationship", source: "Person E", target: "Person A" },
-  },
-];
 
 function generateAltruistRelationships(data) {
   const { total, members } = data;
@@ -120,14 +104,6 @@ function addFriendships(data) {
   const edges = cy.elements("edge");
   cy.remove(edges);
   cy.add(data);
-  cy.animate(
-    {
-      fit: true,
-    },
-    {
-      duration: 500,
-    }
-  );
   return;
 }
 
@@ -138,3 +114,12 @@ addFriendshipsCTA.forEach((cta) =>
     addFriendships(friendships[relationshipType]);
   })
 );
+
+cy.on("add", function (e) {
+  const layout = cy.layout({
+    name: "cose",
+    fit: true,
+    animate: true,
+  });
+  layout.run();
+});
