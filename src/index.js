@@ -36,10 +36,10 @@ const cy = cytoscape({
     {
       selector: "edge",
       style: {
-        width: 4,
-        "target-arrow-shape": "triangle",
-        "line-color": "#9dbaea",
-        "target-arrow-color": "#9dbaea",
+        width: 2,
+        "target-arrow-shape": "vee",
+        "line-color": "#2ecc40",
+        "target-arrow-color": "#2ecc40",
         "curve-style": "bezier",
       },
     },
@@ -48,60 +48,59 @@ const cy = cytoscape({
   layout: {
     name: "circle",
     fit: true,
-    padding: 50,
+    padding: "50px",
   },
 });
 
 const friendships = [];
 friendships["flawed"] = [
   {
-    group: "edges",
     data: { id: "AB Relationship", source: "Person A", target: "Person B" },
   },
   {
-    group: "edges",
     data: { id: "BC Relationship", source: "Person B", target: "Person C" },
   },
   {
-    group: "edges",
     data: { id: "DE Relationship", source: "Person D", target: "Person E" },
   },
   {
-    group: "edges",
     data: { id: "CB Relationship", source: "Person C", target: "Person B" },
   },
   {
-    group: "edges",
     data: { id: "EA Relationship", source: "Person E", target: "Person A" },
   },
 ];
 friendships["altruist"] = [
   {
-    group: "edges",
     data: { id: "AB Relationship", source: "Person A", target: "Person B" },
   },
   {
-    group: "edges",
     data: { id: "BC Relationship", source: "Person B", target: "Person C" },
   },
   {
-    group: "edges",
     data: { id: "CD Relationship", source: "Person C", target: "Person D" },
   },
   {
-    group: "edges",
     data: { id: "DE Relationship", source: "Person D", target: "Person E" },
   },
   {
-    group: "edges",
     data: { id: "EA Relationship", source: "Person E", target: "Person A" },
   },
 ];
 
 function addFriendships(data) {
-  const edges = cy.elements("edges");
+  const edges = cy.elements("edge");
   cy.remove(edges);
-  return cy.add(data);
+  cy.add(data);
+  cy.animate(
+    {
+      fit: true,
+    },
+    {
+      duration: 500,
+    }
+  );
+  return;
 }
 
 const addFriendshipsCTA = document.querySelectorAll(".add-friendships");
