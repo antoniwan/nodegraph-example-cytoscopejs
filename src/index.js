@@ -1,5 +1,7 @@
 import cytoscape from "cytoscape";
 
+const PEOPLE_AMOUNT = 20;
+
 const generatePeople = (amount = 5) => {
   let members = [];
   for (let step = 0; step < amount; step++) {
@@ -7,6 +9,7 @@ const generatePeople = (amount = 5) => {
       group: "nodes",
       data: {
         id: `Person ${step + 1}`,
+        index: step,
       },
     };
     members.push(person);
@@ -18,7 +21,7 @@ const generatePeople = (amount = 5) => {
   };
 };
 
-const data = generatePeople(10);
+const data = generatePeople(PEOPLE_AMOUNT);
 
 const cy = cytoscape({
   container: document.querySelector("#cy"),
@@ -69,23 +72,32 @@ friendships["flawed"] = [
     data: { id: "EA Relationship", source: "Person E", target: "Person A" },
   },
 ];
-friendships["altruist"] = [
-  {
-    data: { id: "AB Relationship", source: "Person A", target: "Person B" },
-  },
-  {
-    data: { id: "BC Relationship", source: "Person B", target: "Person C" },
-  },
-  {
-    data: { id: "CD Relationship", source: "Person C", target: "Person D" },
-  },
-  {
-    data: { id: "DE Relationship", source: "Person D", target: "Person E" },
-  },
-  {
-    data: { id: "EA Relationship", source: "Person E", target: "Person A" },
-  },
-];
+
+function generateAltruistRelationships(data) {
+  console.log(data);
+  const { total, members } = data;
+  let relationships = [];
+  members.map((person, index) => {
+    console.log(index, person);
+    const thisPerson = index + 1;
+    let nextPerson = index + 2;
+    if (nextPerson > total) {
+      nextPerson = 1;
+    }
+    relationships.push({
+      data: {
+        id: `${thisPerson}->${nextPerson} Relationship`,
+        source: `Person ${thisPerson}`,
+        target: `Person ${nextPerson}`,
+      },
+    });
+  });
+  return relationships;
+}
+
+const generatedAltruistRelationships = generateAltruistRelationships(data);
+console.log(generatedAltruistRelationships);
+friendships["altruist"] = generatedAltruistRelationships;
 
 function addFriendships(data) {
   const edges = cy.elements("edge");
