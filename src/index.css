@@ -1,0 +1,14 @@
+:root {
+  --var-black: #111111;
+  --var-white: #ffffff;
+  --var-green: #2ecc40;
+}
+body {
+  background-color: var(--var-white);
+  color: var (--var-black);
+}
+
+#cy {
+  height: 100%;
+  width: 100%;
+}
