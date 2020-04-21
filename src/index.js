@@ -74,11 +74,9 @@ friendships["flawed"] = [
 ];
 
 function generateAltruistRelationships(data) {
-  console.log(data);
   const { total, members } = data;
   let relationships = [];
   members.map((person, index) => {
-    console.log(index, person);
     const thisPerson = index + 1;
     let nextPerson = index + 2;
     if (nextPerson > total) {
@@ -95,9 +93,28 @@ function generateAltruistRelationships(data) {
   return relationships;
 }
 
-const generatedAltruistRelationships = generateAltruistRelationships(data);
-console.log(generatedAltruistRelationships);
-friendships["altruist"] = generatedAltruistRelationships;
+function generateFlawedRelationships(data) {
+  const { total, members } = data;
+  let relationships = [];
+  members.map((person, index) => {
+    const thisPerson = index + 1;
+    let nextPerson = Math.floor(Math.random() * (total - 1) + 1);
+    if (nextPerson === thisPerson) {
+      nextPerson = 1;
+    }
+    relationships.push({
+      data: {
+        id: `${thisPerson}->${nextPerson} Relationship`,
+        source: `Person ${thisPerson}`,
+        target: `Person ${nextPerson}`,
+      },
+    });
+  });
+  return relationships;
+}
+
+friendships["altruist"] = generateAltruistRelationships(data);
+friendships["flawed"] = generateFlawedRelationships(data);
 
 function addFriendships(data) {
   const edges = cy.elements("edge");
