@@ -1,29 +1,28 @@
 import cytoscape from "cytoscape";
 
+const generatePeople = (amount = 5) => {
+  let members = [];
+  for (let step = 0; step < amount; step++) {
+    const person = {
+      group: "nodes",
+      data: {
+        id: `Person ${step + 1}`,
+      },
+    };
+    members.push(person);
+  }
+
+  return {
+    total: amount,
+    members: members,
+  };
+};
+
+const data = generatePeople(10);
+
 const cy = cytoscape({
   container: document.querySelector("#cy"),
-  elements: [
-    {
-      group: "nodes",
-      data: { id: "Person A" },
-    },
-    {
-      group: "nodes",
-      data: { id: "Person B" },
-    },
-    {
-      group: "nodes",
-      data: { id: "Person C" },
-    },
-    {
-      group: "nodes",
-      data: { id: "Person D" },
-    },
-    {
-      group: "nodes",
-      data: { id: "Person E" },
-    },
-  ],
+  elements: data.members,
   style: [
     // the stylesheet for the graph
     {
